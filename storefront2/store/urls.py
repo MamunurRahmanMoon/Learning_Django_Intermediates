@@ -8,6 +8,7 @@ from pprint import pprint
 router = routers.DefaultRouter()
 router.register("products", views.ProductViewSet, basename="products")
 router.register("collections", views.CollectionViewSet)
+router.register("carts", views.CartViewSet)
 
 ##### Nested Router for Product Review
 
@@ -17,8 +18,12 @@ router.register("collections", views.CollectionViewSet)
 product_router = routers.NestedDefaultRouter(router, "products", lookup="product")
 product_router.register("reviews", views.ReviewViewSet, basename="product-review")
 
+##### Nested Router for Product Review
+item_router = routers.NestedDefaultRouter(router, "carts", lookup="cart")
+item_router.register("items", views.CartItemViewSet, basename="cart-items-details")
+
 #### URLConf
-urlpatterns = router.urls + product_router.urls
+urlpatterns = router.urls + product_router.urls + item_router.urls
 
 
 # urlpatterns = [
